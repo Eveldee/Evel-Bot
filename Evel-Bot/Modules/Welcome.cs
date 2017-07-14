@@ -157,6 +157,6 @@ namespace Evel_Bot.Modules
         //    {
         //        Name = name;
         //    }
-        */}
+        }*/
     }
 }
