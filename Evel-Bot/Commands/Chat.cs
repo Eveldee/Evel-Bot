@@ -59,8 +59,10 @@ namespace Evel_Bot.Commands
 
                 if (input == "!exit")
                     break;
-
-                CurrentChannel.SendMessageAsync(input);
+                else if (input[0] == '!')
+                    Command.ExeCommand(input.Substring(1)).GetAwaiter().GetResult();
+                else
+                    CurrentChannel.SendMessageAsync(input);
             }
 
             if (IsGcOn)

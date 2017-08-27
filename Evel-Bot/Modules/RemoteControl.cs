@@ -55,8 +55,9 @@ namespace Evel_Bot.Modules
                 }
 
                 await Program.SendCommand(msg.Content.Substring(1));
-                await msg.Channel.SendEmbed(EmbedTemplates.Info, $"{msg.Author.Username} used command: \n{msg.Content.Substring(1)}");
                 await msg.DeleteAsync();
+                await msg.Channel.SendEmbed(EmbedTemplates.Info, $"{msg.Author.Username} used command: \n{msg.Content.Substring(1)}");
+                await Shell.WriteLineAsync($"[RemoteControl] {msg.Author.Username} executed \"{msg.Content}\"");
             }
             else if (msg.Content[0] == '$')
                 await msg.Channel.SendEmbed(EmbedTemplates.Forbidden, "You don't have the permission to send remote commands.");

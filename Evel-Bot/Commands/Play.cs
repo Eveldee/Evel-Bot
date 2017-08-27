@@ -17,7 +17,7 @@ namespace Evel_Bot.Commands
 
             string str = input.Split(' ').SubArray(1).Concat(" ");
             await Program.Client.SetGameAsync(str);
-            Shell.WriteLine($"Current game setted to: {str}");
+            Shell.WriteLine($"[Play] Current game set to: {str}");
         }
     }
 }

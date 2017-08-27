@@ -53,7 +53,7 @@ namespace Evel_Bot.Modules
                 return;
 
             string word = await Task.Run( () => (   from str in Words
-                                                    where msg.Content.StartsWith(str, StringComparison.OrdinalIgnoreCase)
+                                                    where msg.Content.Equals(str, StringComparison.OrdinalIgnoreCase)
                                                     select str).FirstOrDefault());
 
             if (word != null)

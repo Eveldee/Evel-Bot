@@ -42,8 +42,9 @@ namespace Evel_Bot.Commands
                 case string str when str.StartsWith("chat", StringComparison.OrdinalIgnoreCase):
                     Chat.Connect(input.Substring(5));
                     break;
-                //case string str when str.StartsWith("connnect", StringComparison.OrdinalIgnoreCase):
-                //    break;
+                case string str when str.StartsWith("reload", StringComparison.OrdinalIgnoreCase):
+                    Reload(input);
+                    break;
                 //case string str when str.StartsWith("connnect", StringComparison.OrdinalIgnoreCase):
                 //    break;
                 //case string str when str.StartsWith("connnect", StringComparison.OrdinalIgnoreCase):

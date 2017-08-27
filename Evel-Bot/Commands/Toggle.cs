@@ -6,6 +6,7 @@ using System.IO;
 using Evel_Bot.Modules;
 using Evel_Bot.Util;
 using Evel_Bot.Util.Extensions;
+using System.Linq;
 
 namespace Evel_Bot.Commands
 {
@@ -67,36 +68,40 @@ namespace Evel_Bot.Commands
 
         public static void Auto(string input) //? Add/Remove modules from Autostart
         {
-            if (input.Split(' ').Length < 2)
-            {
-                Shell.WriteLineError("Invalid arguments, try with \"auto <Module>\"");
-                return;
-            }
-
             ConfigurationFile module = new ConfigurationFile(Path.Combine(AppContext.BaseDirectory, "modules.config"));
 
-            foreach(string str in input.Split(' ').SubArray(1))
+            if (input.Split(' ').Length < 2 || input.Contains("list")) // List all enabled/disabled auto Module
             {
+                foreach (Setting s in module.GetAll())
+                    Shell.WriteLine(s.Value == "true" ? ConsoleColor.Green : ConsoleColor.Red, s.Key);
 
-                if (module[str] == null)
+                //Shell.WriteLineError("Invalid arguments, try with \"auto <Module>\"");
+                //return;
+            }
+
+            foreach (string str in input.Split(' ').SubArray(1))
+            {
+                string key = module.GetAll().Where(x => x.Key.Equals(str, StringComparison.OrdinalIgnoreCase)).Select(x => x.Key).FirstOrDefault();
+
+                if (key == null)
                 {
                     Shell.WriteLineError("The module " + str + " don't exist.");
                     continue;
                 }
 
-                string value = module[str].Value;
+                string value = module[key].Value;
 
                 if (value == "false")
                 {
-                    module.Set(str, "true");
+                    module.Set(key, "true");
                     module.Save();
-                    Shell.WriteLine(ConsoleColor.Cyan, "Module " + str + " added to Autostart");
+                    Shell.WriteLine(ConsoleColor.Cyan, "Module " + key + " added to Autostart");
                 }
                 else if (value == "true")
                 {
-                    module.Set(str, "false");
+                    module.Set(key, "false");
                     module.Save();
-                    Shell.WriteLine(ConsoleColor.Cyan, "Module " + str + " removed from Autostart");
+                    Shell.WriteLine(ConsoleColor.Cyan, "Module " + key + " removed from Autostart");
                 }
             }
         }

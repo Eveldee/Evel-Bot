@@ -37,14 +37,15 @@ namespace Evel_Bot.Modules
                 SocketGuildUser user = msg.Author as SocketGuildUser; //Cast SocketUser to get permissions, this normally won't work.
                 if (user.GuildPermissions.ManageMessages == false)
                 {
-                    await msg.Channel.SendEmbed(EmbedTemplates.Forbidden, "You don't have the permission remove messages.");
+                    await msg.Channel.SendEmbed(EmbedTemplates.Forbidden, "You don't have the permission to delete messages.");
                     return;
                 }
 
                 int count = int.Parse(split[1]);
                 await DeleteMessages(msg.Channel , count);
 
-                await msg.Channel.SendEmbed(EmbedTemplates.Info, $"{msg.Author.Username} removed {count} messages");
+                if (split.Length < 3)
+                    await msg.Channel.SendEmbed(EmbedTemplates.Info, $"{msg.Author.Username} removed {count} messages");
             }
         }
 

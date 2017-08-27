@@ -42,7 +42,7 @@ namespace Evel_Bot.Commands
 
             if (token == null || type == TokenType.Bearer)
             {
-                Shell.WriteLine("Invalid arguments, please try with \"connect bot/user token\"");
+                Shell.WriteLineError("Invalid arguments, please try with \"connect bot/user token\"");
                 return;
             }
 
