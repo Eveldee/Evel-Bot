@@ -30,8 +30,8 @@ namespace Evel_Bot.Modules
             }
             catch (Exception e)
             {
-                Shell.WriteLine(ConsoleColor.Red, "Can't acces to " + ConfigPath);
-                Shell.WriteLine(e.Message);
+                Shell.WriteLineError("Can't acces to " + ConfigPath);
+                Shell.WriteLineError(e.Message);
                 Desactivate();
             }
             Program.Client.MessageReceived += Client_MessageReceived;

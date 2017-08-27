@@ -130,5 +130,54 @@ namespace Evel_Bot.Util
             Console.ForegroundColor = Ccolor;
         }
 
+        public static void WriteError(object str) //Console.Error.Write Override
+        {
+            var CColor = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Red;
+
+            Console.Error.Write(str.ToString());
+
+            Console.ForegroundColor = CColor;
+        }
+
+        public static void WriteError(Action a) // Print a StackTrace
+        {
+            var CColor = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Red;
+
+            a();
+
+            Console.ForegroundColor = CColor;
+        }
+
+        public static async Task WriteErrorAsync(object str) //Console.Error.WriteAsync Override
+        {
+            var CColor = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Red;
+
+            await Console.Error.WriteAsync(str.ToString());
+
+            Console.ForegroundColor = CColor;
+        }
+
+        public static void WriteLineError(object str) //Console.Error.WriteLine Override
+        {
+            var CColor = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Red;
+
+            Console.Error.WriteLine(str.ToString());
+
+            Console.ForegroundColor = CColor;
+        }
+
+        public static async Task WriteLineErrorAsync(object str) //Console.Error.WriteLineAsync Override
+        {
+            var CColor = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Red;
+
+            await Console.Error.WriteLineAsync(str.ToString());
+
+            Console.ForegroundColor = CColor;
+        }
     }
 }

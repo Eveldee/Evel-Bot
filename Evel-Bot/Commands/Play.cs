@@ -11,7 +11,7 @@ namespace Evel_Bot.Commands
         {
             if (!Program.ClientAccount.IsConnected)
             {
-                await Shell.WriteLineAsync(ConsoleColor.Red, "You must be connected before setting the playing game");
+                await Shell.WriteLineErrorAsync("You must be connected before setting the playing game");
                 return;
             }
 

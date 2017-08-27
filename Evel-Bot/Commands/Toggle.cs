@@ -46,7 +46,7 @@ namespace Evel_Bot.Commands
 
                 if (m == null)
                 {
-                    Shell.WriteLine(ConsoleColor.Red, "Module " + str + " don't exist.");
+                    Shell.WriteLineError("Module " + str + " don't exist.");
                     return;
                 }
 
@@ -69,7 +69,7 @@ namespace Evel_Bot.Commands
         {
             if (input.Split(' ').Length < 2)
             {
-                Shell.WriteLine(ConsoleColor.Red, "Invalid arguments, try with \"auto <Module>\"");
+                Shell.WriteLineError("Invalid arguments, try with \"auto <Module>\"");
                 return;
             }
 
@@ -80,7 +80,7 @@ namespace Evel_Bot.Commands
 
                 if (module[str] == null)
                 {
-                    Shell.WriteLine(ConsoleColor.Red, "The module " + str + " don't exist.");
+                    Shell.WriteLineError("The module " + str + " don't exist.");
                     continue;
                 }
 

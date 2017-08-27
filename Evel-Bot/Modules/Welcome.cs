@@ -36,8 +36,8 @@ namespace Evel_Bot.Modules
             }
             catch (Exception e)
             {
-                Shell.WriteLine(ConsoleColor.Red ,"Can't open config file, please retry.");
-                Shell.WriteLine(e.Message);
+                Shell.WriteLineError("Can't open config file, please retry.");
+                Shell.WriteLineError(e.Message);
                 Desactivate();
             }
 
@@ -141,8 +141,8 @@ namespace Evel_Bot.Modules
                 }
                 catch (Exception e)
                 {
-                    Shell.WriteLine(ConsoleColor.Red, "Can't open config file, please retry.");
-                    Shell.WriteLine(e.Message);
+                    Shell.WriteLineError("Can't open config file, please retry.");
+                    Shell.WriteLineError(e.Message);
                     Desactivate();
                 }
             });

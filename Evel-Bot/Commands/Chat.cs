@@ -81,7 +81,7 @@ namespace Evel_Bot.Commands
 
             if (channels == null || channels.Length == 0)
             {
-                Shell.WriteLine(ConsoleColor.Red, "Channel with the name " + name + " didn't exist.");
+                Shell.WriteLineError("Channel with the name " + name + " don't exist.");
                 return null;
             }
             if (channels.Length == 1)
@@ -113,13 +113,13 @@ namespace Evel_Bot.Commands
 
             if (channel == null)
             {
-                Shell.WriteLine(ConsoleColor.Red, "Invalid ID, can't connect to channel");
+                Shell.WriteLineError("Invalid ID, can't connect to channel");
                 return null;
             }
 
             if (!(channel is ISocketMessageChannel))
             {
-                Shell.WriteLine(ConsoleColor.Red, "Error, can only connect to a TextChannel.");
+                Shell.WriteLineError("Error, can only connect to a TextChannel.");
                 return null;
             }
 

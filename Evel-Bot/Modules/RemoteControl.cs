@@ -55,7 +55,7 @@ namespace Evel_Bot.Modules
                 }
 
                 await Program.SendCommand(msg.Content.Substring(1));
-                await msg.Channel.SendEmbed(EmbedTemplates.Info, $"{msg.Author.Username} used the command {msg.Content.Substring(1)}.");
+                await msg.Channel.SendEmbed(EmbedTemplates.Info, $"{msg.Author.Username} used command: \n{msg.Content.Substring(1)}");
                 await msg.DeleteAsync();
             }
             else if (msg.Content[0] == '$')
@@ -77,7 +77,7 @@ namespace Evel_Bot.Modules
             }
             if (args.Length < 2)
             {
-                Shell.WriteLine(ConsoleColor.Red, "Invalid use, try with \"remote <add/remove> <username>\"");
+                Shell.WriteLineError("Invalid use, try with \"remote <add/remove> <username>\"");
                 return;
             }
 

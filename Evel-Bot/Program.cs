@@ -76,8 +76,8 @@ namespace Evel_Bot
             }
             catch (Exception e)
             {
-                Shell.WriteLine(ConsoleColor.Red, "Can't create Modules config directory.");
-                Shell.WriteLine(e.Message);
+                Shell.WriteLineError("Can't create Modules config directory.");
+                Shell.WriteLineError(e.Message);
             }
 
             //? Auto activated Modules

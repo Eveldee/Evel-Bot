@@ -53,8 +53,8 @@ namespace Evel_Bot.Commands
             }
             catch (Exception e)
             {
-                Shell.WriteLine(ConsoleColor.Red, "Error during connection...");
-                Shell.WriteLine(ConsoleColor.Red, e.Message);
+                Shell.WriteLineError("Error during connection...");
+                Shell.WriteLineError(e.Message);
                 return;
             }
 
@@ -67,7 +67,7 @@ namespace Evel_Bot.Commands
             {
                 if (timeout > 20)
                 {
-                    Shell.WriteLine(ConsoleColor.Red, "Error during connection...");
+                    Shell.WriteLineError("Error during connection...");
                     await Disconnect();
                     return;
                 }

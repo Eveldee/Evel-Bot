@@ -3,11 +3,14 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.0</TargetFramework>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <Description>A simple C# Discord bot client</Description>
+    <Company>Ilyx</Company>
+    <Authors>Eveldee</Authors>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Discord.Net" Version="1.0.0-rc2" />
-    <PackageReference Include="System.ValueTuple" Version="4.4.0-preview1-25305-02" />
+    <PackageReference Include="Discord.Net" Version="1.0.1" />
   </ItemGroup>
 
 </Project>

@@ -44,7 +44,7 @@ namespace Evel_Bot.Commands
 
             if (Program.Client.TokenType != Discord.TokenType.Bot)
             {
-                Shell.WriteLine(ConsoleColor.Red ,"This command can only be used with a bot account.");
+                Shell.WriteLineError("This command can only be used with a bot account.");
                 return;
             }
 
