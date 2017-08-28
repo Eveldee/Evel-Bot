@@ -20,6 +20,8 @@ namespace Evel_Bot
         public static Account ClientAccount { get; private set; } = new Account();
         public static DiscordSocketClient Client => ClientAccount.Client;
 
+        private static string[] args;
+
         static void Main(string[] args) //! Main Method
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
@@ -27,6 +29,7 @@ namespace Evel_Bot
 
             Shell.WriteLine(ConsoleColor.DarkCyan, "Starting Evel-Bot client...");
             Ini();
+            Program.args = args;
             Shell.WriteLine("Client ready, please connect to a bot or a user account");
             Shell.WriteLine("Exemple : \"connect [bot | user] token");
 
@@ -106,7 +109,12 @@ namespace Evel_Bot
 
         async Task MainAsync() //! Main loop
         {
-            while(true)
+            foreach (string str in args) //? Execute launch commands
+            {
+                await Command.ExeCommand(str);
+            }
+
+            while(true) //? Main async loop
             {
                 string input = Shell.Input();
                 ShellEventArgs args = new ShellEventArgs(input);

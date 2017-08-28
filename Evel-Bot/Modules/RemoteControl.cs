@@ -54,9 +54,18 @@ namespace Evel_Bot.Modules
                     return;
                 }
 
-                await Program.SendCommand(msg.Content.Substring(1));
                 await msg.DeleteAsync();
-                await msg.Channel.SendEmbed(EmbedTemplates.Info, $"{msg.Author.Username} used command: \n{msg.Content.Substring(1)}");
+                string commands = "";
+
+                foreach (string str in msg.Content.Split("&&")) // Execute command
+                {
+                    string cmd = str.Trim().TrimStart('$');
+
+                    commands += cmd + "\n";
+                    await Program.SendCommand(cmd);
+                }
+
+                await msg.Channel.SendEmbed(EmbedTemplates.Info, $"{msg.Author.Username} used command:\n{commands}");
                 await Shell.WriteLineAsync($"[RemoteControl] {msg.Author.Username} executed \"{msg.Content}\"");
             }
             else if (msg.Content[0] == '$')
