@@ -130,50 +130,50 @@ namespace Evel_Bot.Util
             Console.ForegroundColor = Ccolor;
         }
 
-        public static void WriteError(object str) //Console.Error.Write Override
+        public static void WriteError(object str, ConsoleColor color = ConsoleColor.Red) //Console.Error.Write Override
         {
             var CColor = Console.ForegroundColor;
-            Console.ForegroundColor = ConsoleColor.Red;
+            Console.ForegroundColor = color;
 
             Console.Error.Write(str.ToString());
 
             Console.ForegroundColor = CColor;
         }
 
-        public static void WriteError(Action a) // Print a StackTrace
+        public static void WriteError(Action a, ConsoleColor color = ConsoleColor.Red) // Print a StackTrace
         {
             var CColor = Console.ForegroundColor;
-            Console.ForegroundColor = ConsoleColor.Red;
+            Console.ForegroundColor = color;
 
             a();
 
             Console.ForegroundColor = CColor;
         }
 
-        public static async Task WriteErrorAsync(object str) //Console.Error.WriteAsync Override
+        public static async Task WriteErrorAsync(object str, ConsoleColor color = ConsoleColor.Red) //Console.Error.WriteAsync Override
         {
             var CColor = Console.ForegroundColor;
-            Console.ForegroundColor = ConsoleColor.Red;
+            Console.ForegroundColor = color;
 
             await Console.Error.WriteAsync(str.ToString());
 
             Console.ForegroundColor = CColor;
         }
 
-        public static void WriteLineError(object str) //Console.Error.WriteLine Override
+        public static void WriteLineError(object str, ConsoleColor color = ConsoleColor.Red) //Console.Error.WriteLine Override
         {
             var CColor = Console.ForegroundColor;
-            Console.ForegroundColor = ConsoleColor.Red;
+            Console.ForegroundColor = color;
 
             Console.Error.WriteLine(str.ToString());
 
             Console.ForegroundColor = CColor;
         }
 
-        public static async Task WriteLineErrorAsync(object str) //Console.Error.WriteLineAsync Override
+        public static async Task WriteLineErrorAsync(object str, ConsoleColor color = ConsoleColor.Red) //Console.Error.WriteLineAsync Override
         {
             var CColor = Console.ForegroundColor;
-            Console.ForegroundColor = ConsoleColor.Red;
+            Console.ForegroundColor = color;
 
             await Console.Error.WriteLineAsync(str.ToString());
 

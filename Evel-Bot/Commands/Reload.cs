@@ -24,7 +24,9 @@ namespace Evel_Bot.Commands
                     }
                 }
 
-                Shell.WriteLine("[Reload] All modules have been reloaded");
+                Shell.Write(ConsoleColor.DarkCyan, "[Reload] ");
+                Shell.WriteLine("All modules have been reloaded");
+                Log.SendLog("[Reload] All modules have been reloader");
             }
             else //! Reload specified modules
             {
@@ -36,7 +38,9 @@ namespace Evel_Bot.Commands
                     {
                         module.Desactivate();
                         module.Activate();
-                        Shell.WriteLine($"[Reload] Module {module.GetType().Name} reloaded");
+                        Shell.Write(ConsoleColor.DarkCyan, "[Reload] ");
+                        Shell.WriteLine($"Module {module.GetType().Name} reloaded");
+                        Log.SendLog($"[Reload] Module {module.GetType().Name} reloaded");
                     }
                 }
             }

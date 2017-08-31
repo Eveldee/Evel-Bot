@@ -8,6 +8,8 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.IO;
+using System.Runtime.InteropServices;
+using System.Text;
 
 namespace Evel_Bot
 {
@@ -24,15 +26,19 @@ namespace Evel_Bot
 
         static void Main(string[] args) //! Main Method
         {
-            Console.OutputEncoding = System.Text.Encoding.UTF8;
-            Console.InputEncoding = System.Text.Encoding.UTF8;
+            // Set Encoding
+            Console.OutputEncoding = Encoding.UTF8;
+            Console.OutputEncoding = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ?
+                Encoding.Unicode : Encoding.UTF8;
 
+            // Ini methods
             Shell.WriteLine(ConsoleColor.DarkCyan, "Starting Evel-Bot client...");
             Ini();
             Program.args = args;
             Shell.WriteLine("Client ready, please connect to a bot or a user account");
             Shell.WriteLine("Exemple : \"connect [bot | user] token");
 
+            // Is a loop requiered?
             while (true)
             {
                 new Program().MainAsync().GetAwaiter().GetResult();

@@ -30,8 +30,8 @@ namespace Evel_Bot.Modules
             }
             catch (Exception e)
             {
-                Shell.WriteLine("Can't read " + ConfigPath);
-                Shell.WriteLine(e.Message);
+                this.LogError("Can't read " + ConfigPath);
+                this.LogError(e.Message);
             }
             Skip:
             Program.ShellEvent += OnInput;
@@ -66,7 +66,7 @@ namespace Evel_Bot.Modules
                 }
 
                 await msg.Channel.SendEmbed(EmbedTemplates.Info, $"{msg.Author.Username} used command:\n{commands}");
-                await Shell.WriteLineAsync($"[RemoteControl] {msg.Author.Username} executed \"{msg.Content}\"");
+                await this.LogAsync($"{msg.Author.Username} executed \"{msg.Content}\"");
             }
             else if (msg.Content[0] == '$')
                 await msg.Channel.SendEmbed(EmbedTemplates.Forbidden, "You don't have the permission to send remote commands.");
@@ -82,12 +82,12 @@ namespace Evel_Bot.Modules
 
             if (args[0].Equals("list", StringComparison.OrdinalIgnoreCase))
             {
-                Shell.WriteLine(RemoteUsers.Concat(", "));
+                this.Log(RemoteUsers.Concat(", "));
                 return;
             }
             if (args.Length < 2)
             {
-                Shell.WriteLineError("Invalid use, try with \"remote <add/remove> <username>\"");
+                this.Log("Invalid use, try with \"remote <add/remove> <username>\"");
                 return;
             }
 
@@ -111,7 +111,7 @@ namespace Evel_Bot.Modules
                 foreach (string str in args.SubArray(1))
                 {
                     RemoteUsers.Add(str);
-                    Shell.WriteLine(ConsoleColor.Cyan, "Added " + str + " to RemoteUsers");
+                    this.Log("Added " + str + " to RemoteUsers", ConsoleColor.Cyan);
                 }
             }
             else if (args[0].Equals("remove", StringComparison.OrdinalIgnoreCase))
@@ -119,7 +119,7 @@ namespace Evel_Bot.Modules
                 foreach (string str in args.SubArray(1))
                 {
                     RemoteUsers.Remove(str);
-                    Shell.WriteLine(ConsoleColor.Cyan, "Removed " + str + " from RemoteUsers");
+                    this.Log("Removed " + str + " from RemoteUsers", ConsoleColor.Cyan);
                 }
             }
             Save();
@@ -133,8 +133,8 @@ namespace Evel_Bot.Modules
             }
             catch (Exception e)
             {
-                Shell.WriteLine("Can't save config to " + ConfigPath);
-                Shell.WriteLine(e.Message);
+                this.Log("Can't save config to " + ConfigPath);
+                this.Log(e.Message);
             }
         }
     }

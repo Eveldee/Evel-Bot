@@ -23,7 +23,7 @@ namespace Evel_Bot.Modules
 
         private async Task Client_MessageReceived(SocketMessage msg)
         {
-            await Shell.WriteLineAsync(msg.Channel.Name + "/" + msg.Author.Username + ": " + msg.Content);
+            await this.LogAsync(msg.Channel.Name + "/" + msg.Author.Username + ": " + msg.Content);
         }
     }
 }

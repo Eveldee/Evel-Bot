@@ -41,11 +41,16 @@ namespace Evel_Bot.Modules
                     return;
                 }
 
-                int count = int.Parse(split[1]);
-                await DeleteMessages(msg.Channel , count);
+                if (int.TryParse(split[1], out int count)) // Check if arg is a number
+                {
+                    await DeleteMessages(msg.Channel, count);
 
-                if (split.Length < 3)
-                    await msg.Channel.SendEmbed(EmbedTemplates.Info, $"{msg.Author.Username} removed {count} messages");
+                    this.Log($"{msg.Author.Username} removed {count} messages");
+
+                    if (split.Length < 3)
+                        await msg.Channel.SendEmbed(EmbedTemplates.Info, $"{msg.Author.Username} removed {count} messages");
+                }
+
             }
         }
 
