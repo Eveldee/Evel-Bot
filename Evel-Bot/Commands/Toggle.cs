@@ -74,9 +74,6 @@ namespace Evel_Bot.Commands
             {
                 foreach (Setting s in module.GetAll())
                     Shell.WriteLine(s.Value == "true" ? ConsoleColor.Green : ConsoleColor.Red, s.Key);
-
-                //Shell.WriteLineError("Invalid arguments, try with \"auto <Module>\"");
-                //return;
             }
 
             foreach (string str in input.Split(' ').SubArray(1))

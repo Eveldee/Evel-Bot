@@ -10,30 +10,17 @@ using Newtonsoft.Json;
 
 namespace Evel_Bot.Modules
 {
-    class RemoteControl : IModule //? A Module to receive remote Commands
+    class RemoteControl : IModule, IJsonConfiguration<List<string>> //? A Module to receive remote Commands
     {
-        List<string> RemoteUsers = new List<string>();
+        List<string> RemoteUsers;
         public string ConfigPath { get; } = Module.GetPath("remote.json");
         public bool IsActivated { get; set; }
+        public List<string> DefaultConfig => new List<string>();
 
 
         public void Activate()
         {
-            try
-            {
-                if (!File.Exists(ConfigPath)) //Don't read the file if it doesn't exist.
-                {
-                    File.WriteAllText(ConfigPath, "[]"); //! Avoid a glitch that make the file corrupted.
-                    goto Skip;
-                }
-                RemoteUsers = JsonConvert.DeserializeObject<List<string>>(File.ReadAllText(ConfigPath));
-            }
-            catch (Exception e)
-            {
-                this.LogError("Can't read " + ConfigPath);
-                this.LogError(e.Message);
-            }
-            Skip:
+            RemoteUsers = this.LoadConfig();
             Program.ShellEvent += OnInput;
             Program.Client.MessageReceived += OnMessage;
         }
@@ -122,20 +109,7 @@ namespace Evel_Bot.Modules
                     this.Log("Removed " + str + " from RemoteUsers", ConsoleColor.Cyan);
                 }
             }
-            Save();
-        }
-
-        private void Save() //Serialize the List to ConfigPath
-        {
-            try
-            {
-                File.WriteAllText(ConfigPath, JsonConvert.SerializeObject(RemoteUsers, new JsonSerializerSettings { Formatting = Formatting.Indented }));
-            }
-            catch (Exception e)
-            {
-                this.Log("Can't save config to " + ConfigPath);
-                this.Log(e.Message);
-            }
+            this.SaveConfig(RemoteUsers);
         }
     }
 }

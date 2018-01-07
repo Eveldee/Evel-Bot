@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Evel_Bot.Modules
 {
-    class Log : IModule //! Log IModule
+    class Log : IModule, IJsonConfiguration<bool> //! Log IModule
     {
         public static event LogEventArgs.LogEventHandler LogEvent;
 
@@ -17,6 +17,9 @@ namespace Evel_Bot.Modules
         private static string DirPath { get; } = Module.GetPath("log");
         private static string LogPath { get; } = Path.Combine(DirPath, "log.txt");
         private static string ErrorPath { get; } = Path.Combine(DirPath, "error.txt");
+        private static bool IsLoggingDiscord { get; set; }
+
+        public bool DefaultConfig => true;
 
         public void Activate()
         {
@@ -30,6 +33,8 @@ namespace Evel_Bot.Modules
 
                 if (!File.Exists(ErrorPath))
                     File.Create(ErrorPath).Close();
+
+                IsLoggingDiscord = this.LoadConfig();
             }
             catch (IOException e)
             {
@@ -40,6 +45,7 @@ namespace Evel_Bot.Modules
 
             LogEvent += Log_LogEvent;
             Program.Client.Log += Client_Log;
+            Program.ShellEvent += Program_ShellEvent;
         }
 
         public void Desactivate()
@@ -52,7 +58,7 @@ namespace Evel_Bot.Modules
         {
             LogEvent?.Invoke(e);
         }
-        public static void SendLog(string message, bool error = false) //? Overload
+        public static void SendLog(string message, bool error = false) // Overload
         {
             LogEvent?.Invoke(new LogEventArgs(error == false ? LogEventType.Info : LogEventType.Error, message));
         }
@@ -73,6 +79,59 @@ namespace Evel_Bot.Modules
                 SendLog(new LogEventArgs(LogEventType.Info, "[Discord] " + msg.Source + " : " + msg.Message));
 
             return Task.CompletedTask;
+        }
+
+        // Handle commands
+        private async Task Program_ShellEvent(ShellEventArgs e)
+        {
+            string[] input = e.Input.Split(' ');
+
+            // Check input
+            if (input[0].ToLower() == "log")
+            {
+                e.Handled = true;
+
+                switch(input[1].ToLower())
+                {
+                    case "clear":
+                        await Clear();
+                        break;
+                    case "discord":
+                        await DiscordLog();
+                        break;
+                    default:
+                        e.Handled = false;
+                        break;
+                }
+            }
+        }
+
+        private async Task Clear()
+        {
+            await File.WriteAllTextAsync(LogPath, "");
+            await File.WriteAllTextAsync(ErrorPath, "");
+
+            await this.LogAsync("Log cleared");
+        }
+
+        private async Task DiscordLog()
+        {
+            if (IsLoggingDiscord)
+            {
+                IsLoggingDiscord = false;
+                await this.SaveConfigAsync(IsLoggingDiscord);
+
+                Program.Client.Log -= Client_Log;
+                await this.LogAsync("Discord log disabled");
+            }
+            else
+            {
+                IsLoggingDiscord = true;
+                await this.SaveConfigAsync(IsLoggingDiscord);
+
+                Program.Client.Log += Client_Log;
+                await this.LogAsync("Discord log enabled");
+            }
         }
     }
 

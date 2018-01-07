@@ -10,30 +10,19 @@ using Evel_Bot.Util;
 
 namespace Evel_Bot.Modules
 {
-    class Hello : IModule //? A Module that say Hello and GoodBye
+    class Hello : IJsonConfiguration<List<string>> //? A Module that say Hello and GoodBye
     {
-        private List<string> Words = new List<string>();
-        private string ConfigPath { get; } = Module.GetPath("hello.json");
         public bool IsActivated { get; set; }
+        public List<string> DefaultConfig => new List<string>() { "Bonjour", "Hello", "Hi", "Hey", "Salut", "Wesh", "Wsh", "Yo", "Yosh", "Hola", "Yolo", "Yop", "Bjr", "Slt", "Lu", "Cya", "Bye", "Goodbye", "Aurevoir", "A plus", "Bonne soirée", "Bonne nuit", "a+", "++" };
+        public List<string> Words;
 
-        public void Activate()
+        private string ConfigPath { get; } = Module.GetPath("hello.json");
+        private string LastWord { get; set; }
+
+
+        public async void Activate()
         {
-            try
-            {
-                if (!File.Exists(ConfigPath)) // Don't try to load config if file don't exist
-                {
-                    Words = new List<string>() { "Bonjour", "Hello", "Hi", "Hey", "Salut", "Wesh", "Wsh", "Yo", "Yosh", "Hola", "Yolo", "Yop", "Bjr", "Slt", "Lu", "Cya", "Bye", "Goodbye", "Aurevoir", "A plus", "Bonne soirée", "Bonne nuit", "a+", "++" };
-                    File.WriteAllText(ConfigPath, JsonConvert.SerializeObject(Words, Formatting.Indented));
-                }
-                else
-                    Words = JsonConvert.DeserializeObject<List<string>>(File.ReadAllText(ConfigPath));
-            }
-            catch (Exception e)
-            {
-                this.LogError("Can't acces to " + ConfigPath);
-                this.LogError(e.Message);
-                Desactivate();
-            }
+            Words = await this.LoadConfigAsync();
             Program.Client.MessageReceived += Client_MessageReceived;
         }
 
@@ -47,25 +36,20 @@ namespace Evel_Bot.Modules
             await CheckHello(arg);
         }
 
-        private async Task CheckHello(SocketMessage msg)
+        private async Task CheckHello(SocketMessage msg) // Check if message is in HelloWords List
         {
             if (msg.Author.IsBot)
                 return;
 
-            string word = await Task.Run( () => (   from str in Words
-                                                    where msg.Content.Equals(str, StringComparison.OrdinalIgnoreCase)
-                                                    select str).FirstOrDefault());
+            string word = await Task.Run(() => (from str in Words
+                                                where msg.Content.Equals(str, StringComparison.OrdinalIgnoreCase)
+                                                select str).FirstOrDefault());
 
-            if (word != null)
+            if (word != null && word != LastWord)
+            {
                 await msg.Channel.SendMessageAsync(word + ", " + msg.Author.Username);
+                LastWord = word;
+            }
         }
-
-        /*x Unused
-        class Store //! Store the 2Lists.
-        {
-            public List<string> HelloWords = new List<string>();
-            public List<string> ByeWords = new List<string>();
-        }
-        */
     }
 }

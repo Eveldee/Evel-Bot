@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Collections.Generic;
 
 namespace Evel_Bot
 {
@@ -17,6 +18,9 @@ namespace Evel_Bot
     class Program //? Main Class
     {
         public delegate Task ShellEventType(ShellEventArgs e);
+        /// <summary>
+        /// Shell input and Remote input
+        /// </summary>
         public static event ShellEventType ShellEvent;
 
         public static Account ClientAccount { get; private set; } = new Account();
@@ -73,7 +77,7 @@ namespace Evel_Bot
         static void IniModules() //! Get all modules
         {
             Modules.Module.ModulesList = (from module in Assembly.GetEntryAssembly().GetTypes()
-                                          where module.GetInterfaces().Contains(typeof(IModule))
+                                          where module.GetInterfaces().Contains(typeof(IModule)) && !module.IsInterface
                                           select Activator.CreateInstance(module) as IModule).ToList();
 
             //? Modules config directory
@@ -106,7 +110,9 @@ namespace Evel_Bot
                 {
                     mod.Activate();
                     mod.IsActivated = true;
-                    Shell.WriteLine(ConsoleColor.Cyan, "Autostart: " + name);
+                    Shell.Write(ConsoleColor.DarkCyan, "[Autostart] ");
+                    Shell.WriteLine(ConsoleColor.Cyan, name);
+                    //x Log.SendLog("[Autostart] " + name);
                 }
             }
 

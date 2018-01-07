@@ -34,7 +34,7 @@ namespace Evel_Bot.Modules
                     return;
                 }
 
-                SocketGuildUser user = msg.Author as SocketGuildUser; //Cast SocketUser to get permissions, this normally won't work.
+                SocketGuildUser user = msg.Author as SocketGuildUser; //Cast SocketUser to get permissions
                 if (user.GuildPermissions.ManageMessages == false)
                 {
                     await msg.Channel.SendEmbed(EmbedTemplates.Forbidden, "You don't have the permission to delete messages.");

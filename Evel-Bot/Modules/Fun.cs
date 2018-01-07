@@ -9,31 +9,17 @@ using Newtonsoft.Json;
 
 namespace Evel_Bot.Modules
 {
-    class Fun : IModule //? A Module to link reply to some words.
+    class Fun : IModule, IJsonConfiguration<Dictionary<string, string>> //? A Module to link reply to some words.
     {
-        Dictionary<string, string> FunWords = new Dictionary<string, string>();
+        Dictionary<string, string> FunWords;
         private string ConfigPath { get; } = Module.GetPath("fun.json");
 
         public bool IsActivated { get; set; }
+        public Dictionary<string, string> DefaultConfig => new Dictionary<string, string>() { { "trigger", "say" } };
 
         public void Activate()
         {
-            try
-            {
-                if (!File.Exists(ConfigPath)) // Don't try to load config if file don't exist
-                {
-                    FunWords.Add("trigger", "say");
-                    File.WriteAllText(ConfigPath ,JsonConvert.SerializeObject(FunWords, Formatting.Indented));
-                }
-                else
-                    FunWords = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(ConfigPath));
-            }
-            catch (Exception e)
-            {
-                this.LogError("Can't acces to " + ConfigPath);
-                this.LogError(e.Message);
-                Desactivate();
-            }
+            FunWords = this.LoadConfig();
             Program.Client.MessageReceived += Client_MessageReceived;
         }
 

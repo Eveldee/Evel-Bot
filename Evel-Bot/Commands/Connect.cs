@@ -11,7 +11,7 @@ namespace Evel_Bot.Commands
 {
     static partial class Command
     {
-        static async Task Connect(string input) //? Connect Command
+        static async Task Connect(string input) // Connect Command
         {
             string[] cmd = input.Split(' ');
             string token = null;
@@ -82,9 +82,12 @@ namespace Evel_Bot.Commands
             ConfigurationFile accounts = new ConfigurationFile(Path.Combine(AppContext.BaseDirectory, "accounts.config"));
             accounts.Add(Program.Client.CurrentUser.Username, type + ";" + token);
             accounts.Save();
+
+            // Set playing game
+            await PlayInit();
         }
 
-        static async Task Disconnect() //? Disconnect command
+        static async Task Disconnect() // Disconnect command
         {
             Shell.Write(ConsoleColor.Yellow, "Disconnecting from Discord Server...");
             await Program.Client.StopAsync();
