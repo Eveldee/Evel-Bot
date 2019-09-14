@@ -1,4 +1,3 @@
-﻿using Discord;
 using Discord.WebSocket;
 using Evel_Bot.Commands;
 using Evel_Bot.Modules;

@@ -10,7 +10,7 @@ using Evel_Bot.Util;
 
 namespace Evel_Bot.Modules
 {
-    class Hello : IJsonConfiguration<List<string>> //? A Module that say Hello and GoodBye
+    class Hello : IModule, IJsonConfiguration<List<string>> //? A Module that say Hello and GoodBye
     {
         public bool IsActivated { get; set; }
         public List<string> DefaultConfig => new List<string>() { "Bonjour", "Hello", "Hi", "Hey", "Salut", "Wesh", "Wsh", "Yo", "Yosh", "Hola", "Yolo", "Yop", "Bjr", "Slt", "Lu", "Cya", "Bye", "Goodbye", "Aurevoir", "A plus", "Bonne soirée", "Bonne nuit", "a+", "++" };
